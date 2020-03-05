@@ -56,6 +56,7 @@ interface Props {
   }
   shouldGetAccessToken?: boolean
   isDisabled?: boolean
+  injectedJavaScript?: string
   renderButton?(): ReactNode
   renderClose?(): ReactNode
   onOpen?(): void
@@ -90,7 +91,7 @@ export const isErrorUrl = pipe(
   propSatisfies((error: any) => typeof error !== 'undefined', 'error'),
 )
 
-export const injectedJavaScript = `
+export const injectedJavaScriptDefault = `
   setTimeout(function() {
     document.querySelector("input[type=text]").setAttribute("autocapitalize", "off");
   }, 1);
@@ -227,6 +228,7 @@ export default class LinkedInModal extends React.Component<Props, State> {
     wrapperStyle: StyleSheet.create({}),
     closeStyle: StyleSheet.create({}),
     shouldGetAccessToken: true,
+    injectedJavaScript: injectedJavaScriptDefault
   }
   state: State = {
     raceCondition: false,
@@ -363,7 +365,7 @@ export default class LinkedInModal extends React.Component<Props, State> {
         startInLoadingState
         javaScriptEnabled
         domStorageEnabled
-        injectedJavaScript={injectedJavaScript}
+        injectedJavaScript={this.props.injectedJavaScript}
         sharedCookiesEnabled
         incognito={true}
       />
